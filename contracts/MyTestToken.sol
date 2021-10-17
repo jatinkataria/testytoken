@@ -29,10 +29,9 @@ contract MyTestContract is ERC20 {
       uint256 increment =  balanceOf(account) * 1 / 100;
       _mint(account, increment);
    }
-   
+
    function updateNewTokenHolderInDatabase(address account) internal {
        uint index = 0;
-       // TODO fix this with _balance error check.
       for (index = 0; index < tokenHoldersDatabase.length; index++) {
          if (account == tokenHoldersDatabase[index]) {
             break;   
@@ -43,15 +42,17 @@ contract MyTestContract is ERC20 {
           tokenHoldersDatabase.push(account);
       }
    }
-   
-    function _transfer(address from, address to, uint256 value) override internal {
+
+   function updateTokenHoldersDeposit() internal {
         uint index = 0;
-        super._transfer(from, to, value);
-        updateNewTokenHolderInDatabase(to);
         for (index = 0; index < tokenHoldersDatabase.length; index++) {
             updateBalance(tokenHoldersDatabase[index]);
         }
-  
+   }
+
+    function _transfer(address from, address to, uint256 value) override internal {
+        super._transfer(from, to, value);
+        updateNewTokenHolderInDatabase(to);
+        updateTokenHoldersDeposit();
     }
-    
 }
