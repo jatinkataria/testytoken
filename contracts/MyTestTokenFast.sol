@@ -34,6 +34,7 @@ contract MyTestContractFast is ERC20 {
        address link_addr = _address_link[account];
        if (address(0) == link_addr) {
            _address_link[_previous_addr] = account;
+           _previous_addr = account;
        } 
    }
    
