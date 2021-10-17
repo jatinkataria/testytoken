@@ -7,10 +7,15 @@ const hre = require("hardhat");
 
 async function main() {
 
+  const [deployer] = await hre.ethers.getSigners();
+
+  console.log("Deploying contracts with the account:", deployer.address);
+
   const Testy = await hre.ethers.getContractFactory("MyTestContract");
   const testChain = await Testy.deploy();
 
   await testChain.deployed();
+  console.log("Account balance:", (await testChain.balanceOf(deployer.address)).toString());
 
   console.log("Test Chain deployed to:", testChain.address);
 }
